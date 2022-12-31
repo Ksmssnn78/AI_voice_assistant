@@ -5,18 +5,15 @@ import threading
 import pyttsx3
 import pywhatkit
 import datetime
-import wikipedia
 import pyjokes
 import google_search
-import tkinter as tk
 
 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
+engine.setProperty('voice', voices[0].id)
 engine.setProperty('rate', 150)
-
 
 
 def talk(text):
@@ -76,7 +73,7 @@ def wiki_p(command):
             cmnd = cmnd.replace("who was ", "")
         print(cmnd)
         talk('searching for' + cmnd)
-        info = wikipedia.summary(cmnd, lines=2)
+        info = pywhatkit.info(cmnd, lines=2, return_value=True)
         print(info)
         talk(info)
     except Exception:
@@ -90,10 +87,10 @@ def stop_vs():
 
 def command_trim(command):
     cmnd = ''
-    if "hey alexa " in command:
-        cmnd = command.replace('hey alexa ', '')
-    elif 'alexa ' in command:
-        cmnd = command.replace('alexa ', '')
+    if "hey hunter " in command:
+        cmnd = command.replace('hey hunter ', '')
+    elif 'hunter ' in command:
+        cmnd = command.replace('hunter ', '')
     return cmnd
 
 
@@ -105,7 +102,8 @@ def take_command():
             voice = listener.listen(source, timeout=8, phrase_time_limit=8)
             command = listener.recognize_google(voice)
             command = command.lower()
-            if 'alexa' in command:
+
+            if 'hunter' in command:
                 command = command_trim(command)
                 print(command)
                 return command
@@ -116,7 +114,7 @@ def take_command():
         return take_command()
 
 
-def run_alexa():
+def run_hunter():
     assistant = GenericAssistant('intents.json')
     assistant.train_model()
     assistant.save_model()
@@ -143,16 +141,18 @@ def run_alexa():
                 talk(pyjokes.get_joke())
             elif 'send message' in response:
                 talk("if you logged in to the whatsApp only then message will be sent within 30 seconds")
-                pywhatkit.sendwhatmsg_instantly("+8801760886380", "this is test msg by python", 30, True, 5)
+                pywhatkit.sendwhatmsg_instantly("+8801960888669", "this is test msg by python", 20, True, 5)
             elif "Sad to see you go" or "Talk to you later" or "Goodbye!" in response:
                 talk(response)
                 stop_vs()
+            elif "Hello!" or "Good to see you again!" or "Hi there, how can I help?":
+                talk(response)
         else:
-            talk("hello this is alexa. You have to mention my name before giving me any command.")
+            talk("hello this is Hunter. You have to mention my name before giving me any command.")
             continue
 
 
 if __name__ == '__main__':
-    run_alexa()
+    run_hunter()
 
 
