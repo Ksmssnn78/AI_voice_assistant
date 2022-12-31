@@ -145,10 +145,8 @@ def run_hunter():
             elif "Sad to see you go" or "Talk to you later" or "Goodbye!" in response:
                 talk(response)
                 stop_vs()
-            elif "Hello!" or "Good to see you again!" or "Hi there, how can I help?":
-                talk(response)
         else:
-            talk("hello this is Hunter. You have to mention my name before giving me any command.")
+            talk("hello this is Hunter. mention my name to give any command.")
             continue
 
 
